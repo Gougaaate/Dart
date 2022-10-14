@@ -1,0 +1,2 @@
+1) Describe quickly here how do you control the robots to perform the advanced track. 
+2) If you filter the measurements, tell a few words on how you do it.
