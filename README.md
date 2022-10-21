@@ -1,35 +1,41 @@
-# DartV2 Challenge 2021
-
-## DartV2 - Lab1 - Part 3 - Low Level Control
-
-### Several small programs are given in the **py** folder :
-
-robot_cmd_1_qx.py : (x=1..9) examples of programs to solve questions 1 to 9 of the low level control lab.
-
-fast_heading_calibration.py : a very ... very very simple 2D calibration of the compass by making the robot turning in places to get min and max values of the
-horizontal magnetic field (these values, different for each dart, can be entered in the imu9 driver)
-
-stop.py just stops the robot and indicate the battery voltage
-
-manual_control.py  controls manually the robot with the laptop keyboard (ESC to exit, all other keys are defined in the program)
-
-### Executing a program on the real robot 
-
-Asuming that your group is grp-dum, the program to test is stop.py, the number of the dart is 7, the user and passwd are uv27 :
-
-``` bash
-$ scp -r py uv27@172.20.25.107:grp-dum
-```
-
-Then in another terminal, log in the dart using ssh with user uv27 (passwd uv27)
-
-``` bash
-$ ssh uv27@172.20.25.107
-$ cd grp-dum/py
-$ python3 stop.py
-```
+# DARTV2 Challenge 2022 - Groupe xXDartSasukeXx
 
 
-## DartV2 - Lab1 - Part 3 - Motion Control
 
-**Now describe your work here ...**
+
+### Auteurs
+
+- Louis Gillard - [louis.gillard@ensta-bretagne.org](https://outlook.office.com/mail) (Promotion ENSTA Bretagne 2024 Spécialité Robotique Autonome)
+- Adam Goux--Gateau - [adam.goux--gateau@ensta-bretagne.org](https://outlook.office.com/mail) (Promotion ENSTA Bretagne 2024 Spécialité Robotique Autonome)
+
+### Description
+
+Ce projet consiste en l'automatisation d'un robot terrestre, le "DART". Il devra parcourir un trajet dans un labyrinthe en s'aidant uniquement de ses capteurs à ultrasons et ses odomètres pour se guider. La programmation s'effectuera  en langage Python 3.
+
+### Remarque(s)
+
+J'adore avoir Damien, Jonas et compagnie comme encadrants <3
+
+## Sommaire
+- [Structure du Git](#structure-du-git)
+- [Informations Générales](#informations-générales)
+  - [État du Projet](#état-du-projet)
+  - [Travail effectué](#travail-effectué)
+  - [Travail en cours](#travail-en-cours)
+- [Guide d'utilisation](#guide-dutilisation)
+
+## Structure du Git
+Les codes se trouvent dans le dossier py
+
+## Informations Générales  
+  
+  ### État du Projet
+    
+5%  
+git créé et projet tout juste débuté. Nous vous tiendrons au courant de nos avancées flamboyantes.
+
+  ### Travail effectué
+Ce README a été écrit, et nous nous sommes familiarisés avec V-REP et git.
+  ### Travail en cours
+Premiers tests de mouvement du robot dans le logiciel de simulation V-REP
+## Guide d'utilisation
