@@ -97,10 +97,10 @@ class DartV2Basis():
             self.__vSimVar["vVoltageBin"] = self.battery_voltage_v2bin(self.__vSimVar["vVoltage"])
                         
         # Import modules to load the drivers
-        from drivers.trex import TrexIO
-        from drivers.sonars import SonarsIO
-        from drivers.encoders import EncodersIO
-        from drivers.imu9 import Imu9IO
+        from trex import TrexIO
+        from sonars import SonarsIO
+        from encoders import EncodersIO
+        from imu9 import Imu9IO
         self.__trex = TrexIO(sim=self.__dartSim)
         #print (self.__vSimVar)
         self.sonars = SonarsIO(sim=self.__dartSim, vsv=self.__vSimVar)
@@ -509,7 +509,7 @@ class DartV2Basis():
 if __name__ == "__main__":
     print ("start")
     myDart = DartV2Basis()
-    print (dir(MyDart))
+    print (dir(myDart))
 
     time.sleep(0.05)
     myDart.end()
