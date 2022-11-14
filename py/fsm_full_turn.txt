@@ -1,0 +1,19 @@
+----- States
+Idle
+Turn
+End
+----- Transitions
+Idle Idle stop doWait
+Idle Turn go doTurn
+Turn Turn go doTurn
+Turn End stop doStop
+----- Events
+go
+stop
+---- Start State
+Idle
+---- Start Event
+stop
+---- End State
+End
+

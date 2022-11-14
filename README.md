@@ -31,11 +31,13 @@ Les codes se trouvent dans le dossier py
   
   ### État du Projet
     
-5%  
-git créé et projet tout juste débuté. Nous vous tiendrons au courant de nos avancées flamboyantes.
+10%  
+Premières simulations. Nous vous tiendrons au courant de nos avancées flamboyantes.
 
   ### Travail effectué
 Ce README a été écrit, et nous nous sommes familiarisés avec V-REP et git.
+
+FSM créée, premiers tests de ligne droite et de rotation
   ### Travail en cours
-Premiers tests de mouvement du robot dans le logiciel de simulation V-REP
+Avancée en ligne droite et rotation en surplace du robot
 ## Guide d'utilisation
