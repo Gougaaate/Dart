@@ -15,14 +15,14 @@
 # Code modified in May 2017, by BenBlop (big changes to adapt to Irvin's
 # drivers and to communicate with V-REP using sockets
 
-# Code modified in April 2018 to adapt to Dart V2 (BenBlop)
-#    4 sonars changed (accessed with I2C)
-#    2 diagonal sonars added (I2C)
-#    Razor IMU (serial) changed to POLOLU IMU (I2C)
-#    7 segments display added (I2C)
-#    Front encoders added (I2C)
+# Code modified in April 2018 to adapt to Dart V2 (
 
-# Code modified in Summer 2019 to use new microcode on DART microcontrollers
+# Code modified in Summer 2019 to use new microcoBenBlop)
+# #    4 sonars changed (accessed with I2C)
+# #    2 diagonal sonars added (I2C)
+# #    Razor IMU (serial) changed to POLOLU IMU (I2C)
+# #    7 segments display added (I2C)
+# #    Front encoders added (I2C)de on DART microcontrollers
 #    change in sonars and seven segments display
 # code taken from : /home/rob/Teach/old-vrep-sims/robmob-dartv2-code-2019/tests/dartv2.py
 

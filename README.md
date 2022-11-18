@@ -26,7 +26,7 @@ J'adore avoir Damien, Jonas et compagnie comme encadrants <3
 
 ## Structure du Git
 Les codes se trouvent dans le dossier py
-
+  
 ## Informations Générales  
   
   ### État du Projet
