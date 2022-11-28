@@ -1,8 +1,8 @@
-import dartv2b
+import drivers_v2.drivers_v2 as drv2
 import time
 
 if __name__ == "__main__":
-    mybot = dartv2b.DartV2()
+    mybot = drv2.DartV2DriverV2()
 
     # place your work here
     print ("Sonar Microcode Version : ",mybot.sonars.get_version())

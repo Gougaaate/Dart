@@ -1,8 +1,8 @@
-import dartv2b
+import drivers_v2.drivers_v2 as drv2
 import time
 
 if __name__ == "__main__":
-    mybot = dartv2b.DartV2()
+    mybot = drv2.DartV2DriverV2()
 
     # place your work here
     print ("Sonar Microcode Version : ",mybot.sonars.get_version())
@@ -29,7 +29,7 @@ if __name__ == "__main__":
     for isn in range(4):
         mybot.sonars.set_mode(isn+1,mode)
     mode = 1
-    for itst in range(100): 
+    for itst in range(10): 
         for isn in range(4):
             mybot.sonars.set_mode(isn+1,mode)
         time.sleep(0.5)

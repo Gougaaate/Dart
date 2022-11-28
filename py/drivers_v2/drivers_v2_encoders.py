@@ -1,15 +1,24 @@
-import time
-import sys
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 import os
+import sys
+import time
 
-# rear wheels encoders and direction, battery level
-# encoders reset
-
-class EncodersIO ():
-    def __init__(self, bus_nb = 2, addr = 0x14, sim=False, vsv=None):
-        self.__sim = sim
-        if self.__sim:
-            self.vsv = vsv
+class EncodersIO():
+    def __init__(self,exec_robot,vsv=None):
+        self.vsv = vsv
+        self.__exec_robot = exec_robot
+        self.__sim = False
+        self.__ros = False
+        self.__real = False
+        if exec_robot == "Sim V-REP":
+            self.__sim = True
+        elif exec_robot == "Sim GAZEBO":
+            self.__sim = True
+        elif exec_robot == "Real":
+            self.__real = True
+        elif exec_robot == "Real ROS":
+            self.__ros = True
 
         self.__bus_nb = 2
         self.__addr = 0x14 
@@ -20,24 +29,13 @@ class EncodersIO ():
         if self.__sim:
             import i2csim as i2c
             self.__dev_i2c=i2c.i2c(self.__addr,self.__bus_nb,vsv=self.vsv)
-        else:
+        elif self.__real:
             import i2creal as i2c
             self.__dev_i2c=i2c.i2c(self.__addr,self.__bus_nb)
-
-        # place your new class variables here
-
-        # initialize  measurements in memory
-        self.enc_left_last = 0
-        self.enc_right_last = 0
-        self.enc_time_last = time.time() # time my be used for  speed estimation
-        self.enc_time_mem = self.enc_time_last
-        self.enc_left_mem = self.enc_left_last
-        self.enc_right_mem = self.enc_right_last
-        self.read_encoders() # initialize encoders memory
-        
-        
-    # place your encoder functions here
-      
+        elif self.__ros:
+            import dartv2_drivers.drivers.i2creal as i2c
+            self.__dev_i2c=i2c.i2c(self.__addr,self.__bus_nb)
+            
     def get_version(self):
         return self.__read_byte(0xC0)
 
@@ -68,24 +66,13 @@ class EncodersIO ():
         
 
     def read_encoders(self):
-        # put last measurement in memory
-        self.enc_left_mem  = self.enc_left_last
-        self.enc_right_mem  = self.enc_right_last
-        self.enc_time_mem = self.enc_time_last
-
-        # do new measurement
-        self.enc_time_last = time.time()
         offs = 0
         self.enc_left = self.__read(offs)
         offs = 2
         self.enc_right = self.__read(offs)
-        self.enc_left_last = self.enc_left
-        self.enc_right_last = self.enc_right
         return [self.enc_left, self.enc_right]
 
     def read_encoders_both (self):
-        # do new measurement
-        self.enc_time_last = time.time()
         offs = 0
         i2c_ok = True
         try:
@@ -93,15 +80,8 @@ class EncodersIO ():
         except:
             i2c_ok = False
         if i2c_ok:
-            # put last measurement in memory
-            self.enc_left_mem  = self.enc_left_last
-            self.enc_right_mem  = self.enc_right_last
-            self.enc_time_mem = self.enc_time_last
-            # compute and store new measurement
             self.enc_left =  v[0] + (v[1] << 8)
             self.enc_right =  v[2] + (v[3] << 8)
-            self.enc_left_last = self.enc_left
-            self.enc_right_last = self.enc_right
         return [self.enc_left, self.enc_right]
 
     def read_motors_direction (self):
@@ -141,28 +121,34 @@ class EncodersIO ():
         except:
             v = None
         return v
-        
 
 if __name__ == "__main__":
     # warning, tests are quite complex in simulation as we need to connect
     # the module to the V-REP simulator...
-    # ... so here we can only test statically with the values in
-    #     vDartv2/vSimVar.py
-    
+
     # test if on real robot , if gpio exists (not very robust)
     # add test on processor type, real robot has armv7l
     tstsim = False
     if (os.access("/sys/class/gpio/gpio266", os.F_OK)) \
        and (platform.processor() == 'armv7l'):
-        encoders = EncodersIO()
+        encoders = EncodersIO("Real")
         print ("Work with real DART")
     # if not the virtual robot is running in V-REP
     else :
         tstsim = True
-        sys.path.append('../../vDartV2')
+        sys.path.append('../vDartV2')
         import vSimVar as vsv
-        encoders = EncodersIO(sim=True,vsv=vsv.tSimVar)
+        tSimVar= vsv.tSimVar
+        encoders = EncodersIO("Sim V-REP",vsv=tSimVar)
+        # initiate communication thread with V-Rep
+        tSimVar["vSimAlive"] = False
+        import vrep_interface as vrep
+        vrep_itf = vrep.VrepInterface(tSimVar)
+        vrep = vrep_itf.start_thread()
+        print ("vDart ready ...")
+        print ("Simulation alive is ",tSimVar["vSimAlive"])
         print ("Work with virtual DART on V-REP")
+
 
     print ("Encoder Microcode Version : ",encoders.get_version())
     print ("Battery Voltage (V) :",encoders.battery_voltage())
@@ -170,3 +156,4 @@ if __name__ == "__main__":
     print ("Motors direction :",encoders.read_motors_direction())
     print ("Reset Encoders")
     encoders.reset_both()
+    encoders.vsv["vSimAlive"] = False
