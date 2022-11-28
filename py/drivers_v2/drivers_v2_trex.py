@@ -4,15 +4,20 @@
 # Initial release 12/05/2016, rewrite of DART/Trex interface
 # © I. Probst, ENSTA-Bretagne, WTFPL
 
+# updated benblop 2021/12/15 : add 4 exec_robot modes
+#   "Sim V-REP" "Sim GAZEBO" "Real" "Real ROS":
 
 import struct
 from collections import OrderedDict
-import fcntl
 import time
+import sys
+import os
 
 # from stackoverflow, it's safer to proxy dict rather than subclassing it
 # this way we are sure to give access to methods we know we want to provide
 # rather than falling back to parent class' methods
+
+
 
 # provide a student-proof dictionary with immutable keys 
 class FixedDict():
@@ -107,12 +112,26 @@ class TrexIO():
     __I2C_TENBIT=0x0704
 
 
-    def __init__(self, bus_nb = 2, addr = 0x07, sim=False):
-        self.__sim = sim
+    def __init__(self, bus_nb = 2, addr = 0x07, exec_robot="Sim V-REP"):
+        self.__dartSimGazebo = False      
+        self.__dartSimVrep = False
+        self.__dartRos = False
+        self.__dartReal = False        
+        if exec_robot == "Sim V-REP":    
+            self.__dartSimVrep = True
+        elif exec_robot == "Sim GAZEBO":
+            self.__dartSimGazebo = True      
+        elif exec_robot == "Real":
+            self.__dartReal = True
+        elif exec_robot == "Real ROS":           
+            self.__dartRos = True       
+        self.__sim = self.__dartSimVrep or self.__dartSimGazebo
+        
         if self.__sim:
             pass
         else:
             import crcmod
+            import fcntl
             self.__i2c_fd ={
                     "in": open("/dev/i2c-"+str(bus_nb), 'rb', buffering=0),
                     "out": open("/dev/i2c-"+str(bus_nb), 'wb', buffering=0)
@@ -145,25 +164,26 @@ class TrexIO():
         
     @property
     def status(self):
-        raw_status = self.i2c_read()
-        # I found no way to get around this as dicts are built with copies
-        # of the values...
-        
-        data = struct.unpack("<hhBB", raw_status)
-        crc = self.compute_crc(raw_status[:-1], 0)
-        if data[-1] != crc:
-            self.reset()
-            raise ValueError(
-                "Expected crc %d got %d.\n Trying to stop motors"%
-                (data[-1], crc)
-                )
-
-        self.__status.update(
-                    zip(
-                        TrexIO.__status_dict_strings, 
-                        data
-                        )
+        if not self.__sim:
+            raw_status = self.i2c_read()
+            # I found no way to get around this as dicts are built with copies
+            # of the values...
+            
+            data = struct.unpack("<hhBB", raw_status)
+            crc = self.compute_crc(raw_status[:-1], 0)
+            if data[-1] != crc:
+                self.reset()
+                raise ValueError(
+                    "Expected crc %d got %d.\n Trying to stop motors"%
+                    (data[-1], crc)
                     )
+
+            self.__status.update(
+                        zip(
+                            TrexIO.__status_dict_strings, 
+                            data
+                            )
+                        )
 
         return self.__status
     
@@ -222,28 +242,60 @@ class TrexIO():
                                 *list(self.command.values())[:-1]
                                 )
 
-        crc = self.compute_crc(data_packet, 0)
         if self.__sim:
             pass
-        else:                
+        else:  
+            crc = self.compute_crc(data_packet, 0)              
             self.__i2c_fd["out"].write(data_packet+struct.pack("B", crc))
             self.__i2c_fd["out"].flush()
             # throttle down students...
             # time.sleep(1e-3)
 
 if __name__ == "__main__":
-    import sys
-    import time
+    # warning, tests are quite complex in simulation as we need to connect
+    # the module to the V-REP simulator...
+
+    # test if on real robot , if gpio exists (not very robust)
+    # add test on processor type, real robot has armv7l
+    tstsim = False
+    if (os.access("/sys/class/gpio/gpio266", os.F_OK)) \
+       and (platform.processor() == 'armv7l'):
+        encoders = EncodersIO("Real")
+        print ("Work with real DART")
+    # if not the virtual robot is running in V-REP
+    else :
+        tstsim = True
+        sys.path.append('../vDartV2')
+        import vSimVar as vsv
+        tSimVar= vsv.tSimVar
+        trex = TrexIO("Sim V-REP")
+        # initiate communication thread with V-Rep
+        tSimVar["vSimAlive"] = False
+        import vrep_interface as vrep
+        vrep_itf = vrep.VrepInterface(tSimVar)
+        vrep = vrep_itf.start_thread()
+        print ("vDart ready ...")
+        print ("Simulation alive is ",tSimVar["vSimAlive"])
+        print ("Work with virtual DART on V-REP")
     
-    val_left = int(sys.argv[1])
-    val_right = int(sys.argv[2])
+    try:
+        val_left = int(sys.argv[1])
+    except:
+        val_left = 80
+    
+    try:
+        val_right = int(sys.argv[2])
+    except:
+        val_right = -80
     
     try:
         duration = float(sys.argv[3])        
     except:
         duration = 1.0 
+
+
+    
     print("Testing motors")
-    trex = TrexIO()
     print(trex.status)
     time.sleep(1e-3)
     trex.command["left_motor_speed"] = val_left
@@ -254,3 +306,6 @@ if __name__ == "__main__":
     trex.command["right_motor_speed"]= 0
     trex.i2c_write()
     print(trex.status)
+
+    if tstsim:
+        tSimVar["vSimAlive"] = False

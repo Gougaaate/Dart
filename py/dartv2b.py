@@ -2,15 +2,18 @@ import drivers.dartv2b_basis
 import sys
 import time
 
+# this virtual Dart is now obsolete ... to be removed
+
 class DartV2(drivers.dartv2b_basis.DartV2Basis):
     def __init__(self):
+        print ("Hi, I am Dart V2 !!!")
         # get init from parent class
         #drivers.dartv2b_basis.DartV2Basis.__init__(self)
         super().__init__()
         # define class variables
-        self.myVarDummy = 42
 
         # place your new class variables here
+        self.myVarDummy = 42
 
     # place your new functions here
     
@@ -20,17 +23,17 @@ class DartV2(drivers.dartv2b_basis.DartV2Basis):
 
     def get_selected_odos(self,front_odos=False):
         if front_odos:
-            odol,odor = self.get_front_odos()
+            odol,odor = self.get_n_mem_front_odos()
         else:
-            odol,odor = self.get_rear_odos()
+            odol,odor = self.get_n_mem_rear_odos()
         return odol,odor
 
-    def get_all_odos(self):
-        odofl,odofr = self.get_front_odos()
-        odorl,odorr = self.get_rear_odos()
+    def get_n_mem_all_odos(self):
+        odofl,odofr = self.get_n_mem_front_odos()
+        odorl,odorr = self.get_n_mem_rear_odos()
         return odofl,odofr,odorl,odorr
     
-    def get_front_odos(self):
+    def get_n_mem_front_odos(self):
         """
         DART wheels are 12 cm diameter
         Virtual DART makes 200 ticks per wheel revolution
@@ -41,7 +44,7 @@ class DartV2(drivers.dartv2b_basis.DartV2Basis):
         self.update_front_encoders (time.time(),odofl,odofr)
         return odofl,odofr
             
-    def get_rear_odos(self):
+    def get_n_mem_rear_odos(self):
         odorl,odorr = self.get_rear_encoders()
         while odorl<0:
             time.sleep(0.0005)
@@ -80,9 +83,9 @@ class DartV2(drivers.dartv2b_basis.DartV2Basis):
         
     def delta_rear_odometers(self,side="both"):
         if side == "both":
-            deltaOdoLeft = self.delta_odometers_without_jumps (
+            deltaOdoLeft = -self.delta_odometers_without_jumps (
                 self.encoders_rear_left_mem,self.encoders_rear_left_last)
-            deltaOdoRight = self.delta_odometers_without_jumps (
+            deltaOdoRight = -self.delta_odometers_without_jumps (
                 self.encoders_rear_right_mem,self.encoders_rear_right_last)
             return [-deltaOdoLeft,-deltaOdoRight]
         elif side == "left":
