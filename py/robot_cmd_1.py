@@ -5,9 +5,8 @@ if __name__ == "__main__":
     mybot = dartv2b.DartV2()
 
     test = True
-    mybot.sonars.
     while test:
-        print(mybot.get_cardinal_sonars()[0], mybot.get_cardinal_sonars()[1], mybot.get_cardinal_sonars()[2], mybot.get_cardinal_sonars()[3])
+        print(mybot.get_cardinal_sonars()[0])
         mybot.set_speed(100,100)
         if mybot.get_cardinal_sonars()[0] < 10:
             test =False

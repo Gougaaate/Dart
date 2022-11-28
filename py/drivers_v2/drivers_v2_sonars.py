@@ -126,6 +126,8 @@ class SonarsIO():
             v = self.__dev_i2c_4_sonars.read(addr,2)
             #print ("v",v)
             v = v[0] + (v[1] << 8)
+            if v == -1:
+                v = 99.99
             #print ("v",v)
         except:
             print ("------ error I2C sonar")
