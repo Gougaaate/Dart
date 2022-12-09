@@ -5,7 +5,7 @@ from log import Log
 
 
 if __name__ == "__main__":
-    dt = .2
+    dt = .1
     Log.dt = dt
     log = Log()
 
@@ -17,8 +17,8 @@ if __name__ == "__main__":
         kp, ki, kd = 0, 0, 0
         left, right = mybot.sonars.read_left(), mybot.sonars.read_right()
 
-        if left + right < 100:
-            kp, ki, kd = .25, 2.7, 0.06
+        if left + right < 60:
+            kp, ki, kd = .4, 2 , 0.01
 
         print(f"")
         delta = [last_delta, right - left]
@@ -28,7 +28,7 @@ if __name__ == "__main__":
         Log.add_to_current_data(I=ki*(delta[0] + delta[1])*dt)
         Log.add_to_current_data(D=kd*(delta[0] - delta[1])/dt)
         print(f"{left = }, {right = }, P = {kp*delta[1]:.2f}, I = {ki*(delta[0] + delta[1])*dt:.2f}, D = {kd*(delta[0] - delta[1])/dt:.2f}")
-        s = kp*delta[1] + ki*(delta[0] + delta[1])*dt + kd*(delta[0] - delta[1])/dt
+        s = kp*delta[1] + ki*(delta[0] + delta[1])*dt - kd*(delta[0] - delta[1])/dt
         mybot.powerboard.set_speed(100 + s  , 100 - s)
 
         return delta[1]
@@ -43,14 +43,18 @@ if __name__ == "__main__":
         last_delta = go_straight(last_delta)
         Log.write_current_data()
 
-        if mybot.sonars.read_4_sonars()[0] < 30:
+        if mybot.sonars.read_4_sonars()[0] < 40:
             mybot.powerboard.set_speed(0, 0)
             time.sleep(1)
 
             if mybot.sonars.read_left() > mybot.sonars.read_right():
                 mybot.turn_left()
-            else:
+                time.sleep(0.3)
+
+            if mybot.sonars.read_left() <= mybot.sonars.read_right() :
                 mybot.turn_right()
+                time.sleep(0.3)
+
         t1_loop = time.time()
         dt_loop = t1_loop - t0_loop
         dt_sleep = dt - dt_loop
