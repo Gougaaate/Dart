@@ -35,6 +35,7 @@ Les codes se trouvent dans le dossier py
 Simulations fonctionnelles.
   ### Travail effectué
 Ce README a été écrit, et nous nous sommes familiarisés avec V-REP et git.
+Mise en place d'un système d'affichage de logs.
 
 Validation de notre simulation, passage au DART réel. Ligne droite maîtrisée, ainsi que détection des murs devant le robot. Problème de vitesse d'approche.
 
