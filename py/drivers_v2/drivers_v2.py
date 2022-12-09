@@ -151,12 +151,12 @@ class DartV2DriverV2 ():
 
     def turn_right(self):
         self.powerboard.set_speed(80,-80)
-        time.sleep(0.95)
+        time.sleep(0.9)
         self.powerboard.set_speed(0,0)
 
     def turn_left(self):
         self.powerboard.set_speed(-80, 80)
-        time.sleep(0.95)
+        time.sleep(0.9)
         self.powerboard.set_speed(0,0)
 
 

@@ -4,15 +4,21 @@ import time
 
 if __name__ == "__main__":
     mybot = drv2.DartV2DriverV2()
-    mybot.powerboard.set_speed(40,40)
-    print('coucou je roule')
-    time.sleep(5)
     mybot.sonars.init_4_sonars()
     test = True
     while test:
-        mybot.powerboard.set_speed(80,80)
-        # print(f"front = {mybot.sonars.read_4_sonars()[0]} left = {mybot.sonars.read_4_sonars()[1]} right = {mybot.sonars.read_4_sonars()[3]}")
-        if mybot.sonars.read_4_sonars()[0] < 70:
+        print(f"front = {mybot.sonars.read_4_sonars()[0]} left = {mybot.sonars.read_4_sonars()[1]} right = {mybot.sonars.read_4_sonars()[3]}")
+
+        time.sleep(1)
+        print("tout droit")
+        mybot.powerboard.set_speed(80, 80)
+        if mybot.sonars.read_4_sonars()[1] < mybot.sonars.read_4_sonars()[3]:
+            mybot.powerboard.set_speed(81, 79)
+        if mybot.sonars.read_4_sonars()[3] < mybot.sonars.read_4_sonars()[1]:
+            mybot.powerboard.set_speed(79, 81)
+
+        if mybot.sonars.read_4_sonars()[0] < 50:
+            mybot.powerboard.set_speed(0,0)
             time.sleep(1)
             if mybot.sonars.read_4_sonars()[1] <= mybot.sonars.read_4_sonars()[3]:
                 print("turn right")
@@ -21,8 +27,8 @@ if __name__ == "__main__":
                 print("turn left")
                 mybot.turn_left()
 
-
-    mybot.powerboard.set_speed(0,0)
+    mybot.powerboard.set_speed(0, 0)
     mybot.end()
+
 
 
