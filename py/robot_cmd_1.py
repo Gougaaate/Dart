@@ -5,7 +5,8 @@ from log import Log
 
 
 if __name__ == "__main__":
-    Log.dt = .1
+    dt = .2
+    Log.dt = dt
     log = Log()
 
     mybot = drv2.DartV2DriverV2()
@@ -13,7 +14,6 @@ if __name__ == "__main__":
 
     def go_straight(last_delta):
 
-        dt = .1
         kp, ki, kd = 0, 0, 0
         left, right = mybot.sonars.read_left(), mybot.sonars.read_right()
 
@@ -38,6 +38,7 @@ if __name__ == "__main__":
     test = True
 
     while test:
+        t0_loop = time.time()
         Log.current_data = []
         last_delta = go_straight(last_delta)
         Log.write_current_data()
@@ -50,7 +51,11 @@ if __name__ == "__main__":
                 mybot.turn_left()
             else:
                 mybot.turn_right()
-
+        t1_loop = time.time()
+        dt_loop = t1_loop - t0_loop
+        dt_sleep = dt - dt_loop
+        if dt_sleep > 0:
+            time.sleep(dt_sleep)
 
     mybot.powerboard.set_speed(0, 0)
     mybot.end()

@@ -1,7 +1,6 @@
 import drivers_v2.drivers_v2 as drv2
 import time
 
-
 if __name__ == "__main__":
     mybot = drv2.DartV2DriverV2()
     mybot.sonars.init_4_sonars()
