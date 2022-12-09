@@ -31,13 +31,14 @@ Les codes se trouvent dans le dossier py
   
   ### État du Projet
     
-10%  
-Premières simulations. Nous vous tiendrons au courant de nos avancées flamboyantes.
-
+30%  
+Simulations fonctionnelles.
   ### Travail effectué
 Ce README a été écrit, et nous nous sommes familiarisés avec V-REP et git.
+Mise en place d'un système d'affichage de logs.
 
-FSM créée, premiers tests de ligne droite et de rotation
+Validation de notre simulation, passage au DART réel. Ligne droite maîtrisée, ainsi que détection des murs devant le robot. Problème de vitesse d'approche.
+
   ### Travail en cours
-Avancée en ligne droite et rotation en surplace du robot
+Correcteur, gestion des virages
 ## Guide d'utilisation
