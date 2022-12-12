@@ -2,35 +2,41 @@ import drivers_v2.drivers_v2 as drv2
 import time
 from log import Log
 
-stop_dist = 40
+stop_dist = 50
 mybot = drv2.DartV2DriverV2()
+
+def borne(x, b): 
+    return max(-abs(b), min(abs(b), x))
 
 def go_straight(last_delta, integ):
     kp, ki, kd = .9, .6, .01
-    s = 0
+    s, prop, deriv = 0, 0, 0
     left, right = mybot.sonars.read_left(), mybot.sonars.read_right()
     delta = [last_delta, right - left]
 
     if left + right < 60: # On est entre deux murs
         print("Entre deux murs")
         # print(f"")
+        prop = kp * delta[1]
         integ += ki * delta[1] * dt
-        deriv = max(-10,min(kd * (delta[1] - delta[0]) / dt, 10))
+        deriv = kd * (delta[1] - delta[0]) / dt
         s = kp * delta[1] + integ + deriv
 
     elif left < 30: # On est proche du mur gauche
         print("Proche du mur gauche")
         delta = [last_delta, 21 - left]
+        prop = kp * delta[1]
         integ += ki * delta[1] * dt
-        deriv = max(-10,min(kd * (delta[1] - delta[0]) / dt, 10))
+        deriv = kd * (delta[1] - delta[0]) / dt
         s = kp * delta[1] + integ + deriv
 
     elif right < 30: # On est proche du mur droit
         print("Proche du mur droit")
         delta = [last_delta, right - 21]
+        prop = kp * delta[1]
         integ += ki * delta[1] * dt
-        deriv = max(-10,min(kd * (delta[1] - delta[0]) / dt, 10))
-        s = kp * delta[1] + integ + deriv
+        deriv = kd * (delta[1] - delta[0]) / dt
+        s = borne(prop, 30) + borne(integ, 30) + borne(deriv, 30)
     
     else:
         s = 0
@@ -40,7 +46,7 @@ def go_straight(last_delta, integ):
     Log.add_to_current_data(left=left, right=right)
     Log.add_to_current_data(front=mybot.sonars.read_4_sonars()[0])
     Log.add_to_current_data(stop_dist=stop_dist)
-    Log.add_to_current_data(P=kp * delta[1], I=integ, D=kd * (delta[1] - delta[0]) / dt)
+    Log.add_to_current_data(P=prop, I=integ, D=deriv)
 
     return delta[1], integ
 
@@ -59,7 +65,7 @@ def turn_left(mybot):
 def stop(mybot):
     print("stop", time.time() - t_init, "s")
     t0 = time.time()
-    aimed_dist = 35
+    aimed_dist = 30
     k = 1
     offset = 20
 
@@ -67,7 +73,7 @@ def stop(mybot):
     while abs(dist - aimed_dist) > 10 and time.time() - t0 < 4:
         t0_loop = time.time()
         dist = mybot.sonars.read_4_sonars()[0]
-        s = min(50,max(k*(dist - aimed_dist) + offset,-50))
+        s = borne(k*(dist - aimed_dist) + offset, 50)
         mybot.powerboard.set_speed(s, s)
 
         t1_loop = time.time()
@@ -100,16 +106,17 @@ if __name__ == "__main__":
 
         if mybot.sonars.read_4_sonars()[0] < stop_dist:
             stop(mybot)
+            integ = 0
 
             if mybot.sonars.read_left() > mybot.sonars.read_right():
                 print("turn left")
                 turn_left(mybot)
-                time.sleep(0.3)
+                time.sleep(0.42)
 
             else:
                 print("turn right")
                 turn_right(mybot)
-                time.sleep(0.3)
+                time.sleep(0.42)
 
         t1_loop = time.time()
         dt_loop = t1_loop - t0_loop
