@@ -149,17 +149,6 @@ class DartV2DriverV2 ():
             time.sleep(0.1)
             print ("... end")
 
-    def turn_right(self):
-        self.powerboard.set_speed(80,-80)
-        time.sleep(0.95)
-        self.powerboard.set_speed(0,0)
-
-    def turn_left(self):
-        self.powerboard.set_speed(-80, 80)
-        time.sleep(0.95)
-        self.powerboard.set_speed(0,0)
-
-
     def simulation_time(self):
         simTime = time.time()
         if self.__dartSim:
