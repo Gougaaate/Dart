@@ -28,7 +28,8 @@ class Log:
     def plot_data():
         with open("log.txt", "r") as f:
             vars = f.readline().split(" ")[:-1]
-            print(vars)
+            print({ i : vars[i] for i in range(0, len(vars))})
+
             n = int(input("Nombre de figures : "))
             plots = []
             for j in range(n):

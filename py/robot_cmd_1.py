@@ -10,7 +10,7 @@ def go_straight(last_delta):
 
 
     if left + right < 60:
-        kp, ki, kd = 0.75, 1.1, 0.43
+        kp, ki, kd = 0.7, 0.8, 0.3
         # print(f"")
     delta = [last_delta, right - left]
     Log.add_to_current_data(left=left)
@@ -28,7 +28,7 @@ def go_straight(last_delta):
 
 
 def turn_right(mybot):
-    mybot.powerboard.set_speed(-40,-40)
+    mybot.powerboard.set_speed(-50,-50)
     time.sleep(0.5)
     mybot.powerboard.set_speed(0,0)
     time.sleep(0.5)
@@ -38,7 +38,7 @@ def turn_right(mybot):
     mybot.powerboard.set_speed(0,0)
 
 def turn_left(mybot):
-    mybot.powerboard.set_speed(-40, -40)
+    mybot.powerboard.set_speed(-50, -50)
     time.sleep(0.5)
     mybot.powerboard.set_speed(0, 0)
     time.sleep(0.5)
