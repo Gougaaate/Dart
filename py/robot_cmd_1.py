@@ -11,7 +11,7 @@ def borne(x, b):
 
 
 def go_straight(last_delta, integ):
-    kp, ki, kd = .9, .6, .01
+    kp, ki, kd = .10, .65, .01
     s, prop, deriv = 0, 0, 0
     left, right = mybot.sonars.read_left(), mybot.sonars.read_right()
     delta = [last_delta, right - left]
@@ -54,21 +54,114 @@ def go_straight(last_delta, integ):
 
 
 def turn_right(mybot):
-    mybot.powerboard.set_speed(80, -80)
-    time.sleep(1)
+    turnSpeed = 80
+    
+    mag = mybot.imu.read_mag_raw()
+    heading = mybot.imu.heading_deg(mag[0], mag[1])
+
+    headingAimed = 0
+    if 315 <= heading or heading < 45:
+        headingAimed = 270
+    elif 45 <= heading < 135:
+        headingAimed = 0
+        i = 1
+        while abs(heading - headingAimed) > 2:
+            if 180 < heading <= 360:
+                mybot.powerboard.set_speed(-turnSpeed, turnSpeed)
+                if i%2 == 0:
+                    turnSpeed *= .93
+                    i+=1
+            else:
+                mybot.powerboard.set_speed(turnSpeed, -turnSpeed)
+                if i%2 == 1:
+                    turnSpeed *= .93
+                    i+=1
+            mag = mybot.imu.read_mag_raw()
+            heading = mybot.imu.heading_deg(mag[0], mag[1])
+            print(heading)
+    elif 135 <= heading < 225:
+        headingAimed = 90
+    else:
+        headingAimed = 180
+    
+    i = 1
+    while abs(heading - headingAimed) > 2:
+        if heading <= headingAimed:
+            mybot.powerboard.set_speed(-turnSpeed, turnSpeed)
+            if i%2 == 0:
+                turnSpeed *= .93
+                i+=1
+        else:
+            mybot.powerboard.set_speed(turnSpeed, -turnSpeed)
+            if i%2 == 1:
+                turnSpeed *= .93
+                i+=1
+        mag = mybot.imu.read_mag_raw()
+        heading = mybot.imu.heading_deg(mag[0], mag[1])
+        print(heading)
+        
     mybot.powerboard.set_speed(0, 0)
+    time.sleep(1)
 
 
 def turn_left(mybot):
-    mybot.powerboard.set_speed(-80, 80)
-    time.sleep(1)
+    turnSpeed = 80
+
+    mag = mybot.imu.read_mag_raw()
+    heading = mybot.imu.heading_deg(mag[0], mag[1])
+
+    headingAimed = 0
+    if 315 <= heading or heading < 45:
+        headingAimed = 90
+    elif 45 <= heading < 135:
+        headingAimed = 180
+    elif 135 <= heading < 225:
+        headingAimed = 270
+    else:
+        headingAimed = 0
+
+        i = 1
+        while abs(heading - headingAimed) > 2:
+            if 180 < heading <= 360:
+                mybot.powerboard.set_speed(-turnSpeed, turnSpeed)
+                if i%2 == 0:
+                    turnSpeed *= .93
+                    i+=1
+            else:
+                mybot.powerboard.set_speed(turnSpeed, -turnSpeed)
+                if i%2 == 1:
+                    turnSpeed *= .93
+                    i+=1
+
+            mag = mybot.imu.read_mag_raw()
+            heading = mybot.imu.heading_deg(mag[0], mag[1])
+            print(heading)
+
+    i = 1    
+    while abs(heading - headingAimed) > 2:
+        if heading <= headingAimed:
+            mybot.powerboard.set_speed(-turnSpeed, turnSpeed)
+            if i%2 == 0:
+                turnSpeed *= .93
+                i+=1
+
+        else:
+            mybot.powerboard.set_speed(turnSpeed, -turnSpeed)
+            if i%2 == 1:
+                turnSpeed *= .93
+                i+=1
+        mag = mybot.imu.read_mag_raw()
+        heading = mybot.imu.heading_deg(mag[0], mag[1])
+        print(heading)
+        
     mybot.powerboard.set_speed(0, 0)
+    time.sleep(1)
 
 
 def stop(mybot):
     print("stop", time.time() - t_init, "s")
     t0 = time.time()
-    aimed_dist = 30
+    aimed_dist = 35
     k = 1
     offset = 20
 
@@ -97,6 +190,13 @@ if __name__ == "__main__":
 
     mybot = drv2.DartV2DriverV2()
     last_delta = mybot.sonars.read_right() - mybot.sonars.read_left()
+
+    magx_min = -629
+    magx_max = 2079
+    magy_min = -4321
+    magy_max = -1749
+
+    mybot.imu.fast_heading_calibration (magx_min, magx_max, magy_min, magy_max)
 
     test = True
     integ = 0
