@@ -64,104 +64,45 @@ def turn_right(mybot):
     mag = mybot.imu.read_mag_raw()
     heading = mybot.imu.heading_deg(mag[0], mag[1])
 
-    headingAimed = 0
-    if 315 <= heading or heading < 45:
+    if angleProche(heading, 0, 45):
         headingAimed = 270
-    elif 45 <= heading < 135:
+    elif angleProche(heading, 90, 45):
         headingAimed = 0
-        i = 1
-        while abs(heading - headingAimed) > 2:
-            if 180 < heading <= 360:
-                mybot.powerboard.set_speed(-turnSpeed, turnSpeed)
-                if i%2 == 0:
-                    turnSpeed *= .93
-                    i+=1
-            else:
-                mybot.powerboard.set_speed(turnSpeed, -turnSpeed)
-                if i%2 == 1:
-                    turnSpeed *= .93
-                    i+=1
-            mag = mybot.imu.read_mag_raw()
-            heading = mybot.imu.heading_deg(mag[0], mag[1])
-            print(heading)
-    elif 135 <= heading < 225:
+    elif angleProche(heading, 180, 45):
         headingAimed = 90
     else:
         headingAimed = 180
-    
-    i = 1
-    while abs(heading - headingAimed) > 2:
-        if heading <= headingAimed:
-            mybot.powerboard.set_speed(-turnSpeed, turnSpeed)
-            if i%2 == 0:
-                turnSpeed *= .93
-                i+=1
-        else:
-            mybot.powerboard.set_speed(turnSpeed, -turnSpeed)
-            if i%2 == 1:
-                turnSpeed *= .93
-                i+=1
+
+    while not angleProche(heading, headingAimed, 4):
+        mybot.powerboard.set_speed(turnSpeed, -turnSpeed)
         mag = mybot.imu.read_mag_raw()
         heading = mybot.imu.heading_deg(mag[0], mag[1])
-        print(heading)
+        # print(heading)
         
     mybot.powerboard.set_speed(0, 0)
-    time.sleep(1)
-
 
 def turn_left(mybot):
     turnSpeed = 80
-
+    
     mag = mybot.imu.read_mag_raw()
     heading = mybot.imu.heading_deg(mag[0], mag[1])
 
-    headingAimed = 0
-    if 315 <= heading or heading < 45:
+    if angleProche(heading, 0, 45):
         headingAimed = 90
-    elif 45 <= heading < 135:
+    elif angleProche(heading, 90, 45):
         headingAimed = 180
-    elif 135 <= heading < 225:
+    elif angleProche(heading, 180, 45):
         headingAimed = 270
     else:
         headingAimed = 0
 
-        i = 1
-        while abs(heading - headingAimed) > 2:
-            if 180 < heading <= 360:
-                mybot.powerboard.set_speed(-turnSpeed, turnSpeed)
-                if i%2 == 0:
-                    turnSpeed *= .93
-                    i+=1
-            else:
-                mybot.powerboard.set_speed(turnSpeed, -turnSpeed)
-                if i%2 == 1:
-                    turnSpeed *= .93
-                    i+=1
-
-            mag = mybot.imu.read_mag_raw()
-            heading = mybot.imu.heading_deg(mag[0], mag[1])
-            print(heading)
-
-    i = 1    
-    while abs(heading - headingAimed) > 2:
-        if heading <= headingAimed:
-            mybot.powerboard.set_speed(-turnSpeed, turnSpeed)
-            if i%2 == 0:
-                turnSpeed *= .93
-                i+=1
-
-        else:
-            mybot.powerboard.set_speed(turnSpeed, -turnSpeed)
-            if i%2 == 1:
-                turnSpeed *= .93
-                i+=1
+    while not angleProche(heading, headingAimed, 4):
+        mybot.powerboard.set_speed(-turnSpeed, turnSpeed)
         mag = mybot.imu.read_mag_raw()
         heading = mybot.imu.heading_deg(mag[0], mag[1])
-        print(heading)
+        # print(heading)
         
     mybot.powerboard.set_speed(0, 0)
-    time.sleep(1)
-
 
 def stop(mybot):
     print("stop", time.time() - t_init, "s")
