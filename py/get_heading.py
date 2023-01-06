@@ -1,7 +1,7 @@
 import sys
 sys.path.insert(0, "../drivers_v2")
 sys.path.insert(0, "../vDartV2")
-import drivers_v2 as drv2
+import drivers_v2.drivers_v2 as drv2
 import time
 import sys
 import math
@@ -19,7 +19,7 @@ def delta_heading(head_ref,head):
 if __name__ == "__main__":
     mybot = drv2.DartV2DriverV2()
 
-    duration = 1.0
+    duration = 1000.0
     try:
         duration = float(sys.argv[2])
     except:
@@ -66,6 +66,11 @@ if __name__ == "__main__":
     #magx_max = 1000
     #magy_min = 0
     #magy_max = 1000
+
+    magx_min = -612
+    magx_max = 1769
+    magy_min = -4171
+    magy_max = -1820
 
     mybot.imu.fast_heading_calibration (magx_min, magx_max, magy_min, magy_max)
 
