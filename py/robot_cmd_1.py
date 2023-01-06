@@ -8,6 +8,12 @@ mybot = drv2.DartV2DriverV2()
 def borne(x, b): 
     return max(-abs(b), min(abs(b), x))
 
+def angleProche(angle1, angle2, epsilon):
+    diff = abs(angle1 - angle2)
+    if diff > 180:
+        diff = 360 - diff
+    return diff < epsilon
+
 def go_straight(last_delta, integ):
     kp, ki, kd = .9, .6, .01
     s, prop, deriv = 0, 0, 0
