@@ -14,7 +14,7 @@ Ce projet consiste en l'automatisation d'un robot terrestre, le "DART". Il devra
 
 ### Remarque(s)
 
-J'adore avoir Damien, Jonas et compagnie comme encadrants <3
+Projet terminé le 06/01/2023, Robotique 2e année ENSTA Bretagne.
 
 ## Sommaire
 - [Structure du Git](#structure-du-git)
@@ -31,14 +31,17 @@ Les codes se trouvent dans le dossier py
   
   ### État du Projet
     
-30%  
-Simulations fonctionnelles.
+100%  
+Simulations fonctionnelles, robot réel remplit le cahier des charges 
+
   ### Travail effectué
 Ce README a été écrit, et nous nous sommes familiarisés avec V-REP et git.
 Mise en place d'un système d'affichage de logs.
 
-Validation de notre simulation, passage au DART réel. Ligne droite maîtrisée, ainsi que détection des murs devant le robot. Problème de vitesse d'approche.
-
+Validation de notre simulation, passage au DART réel. Ligne droite maîtrisée, ainsi que détection des murs devant le robot. 
+Utilisation de la boussole pour les virages. 
+Robot effectif, il parvient à corriger son cap et effectue ses virages au moyen de la boussole.
+  
   ### Travail en cours
-Correcteur, gestion des virages
+None
 ## Guide d'utilisation
