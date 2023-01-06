@@ -22,27 +22,17 @@ def go_straight(last_delta):
     Log.add_to_current_data(D=kd * (delta[0] - delta[1]) / dt)
     # print(f"{left = }, {right = }, P = {kp * delta[1]:.2f}, I = {ki * (delta[0] + delta[1]) * dt:.2f}, D = {kd * (delta[0] - delta[1]) / dt:.2f}")
     s = kp * delta[1] + ki * (delta[0] + delta[1]) * dt - kd * (delta[0] - delta[1]) / dt
-    mybot.powerboard.set_speed(100 + s, 100 - s)
+    mybot.powerboard.set_speed(80 + s, 80 - s)
 
     return delta[1]
 
 
 def turn_right(mybot):
-    mybot.powerboard.set_speed(-50,-50)
-    time.sleep(0.5)
-    mybot.powerboard.set_speed(0,0)
-    time.sleep(0.5)
-
     mybot.powerboard.set_speed(80,-80)
     time.sleep(0.95)
     mybot.powerboard.set_speed(0,0)
 
 def turn_left(mybot):
-    mybot.powerboard.set_speed(-50, -50)
-    time.sleep(0.5)
-    mybot.powerboard.set_speed(0, 0)
-    time.sleep(0.5)
-
     mybot.powerboard.set_speed(-80, 80)
     time.sleep(0.95)
     mybot.powerboard.set_speed(0,0)
@@ -50,12 +40,11 @@ def turn_left(mybot):
 
 def stop(mybot):
     print("stop", time.time() - t_init, "s")
-    aimed_dist = 25
+    aimed_dist = 45
     k = 1
     offset = 20
 
     dist = mybot.sonars.read_4_sonars()[0]
-    s = 16
     while abs(dist - aimed_dist) > 5:
         t0_loop = time.time()
         dist = mybot.sonars.read_4_sonars()[0]
@@ -67,6 +56,7 @@ def stop(mybot):
         if dt_sleep > 0:
             time.sleep(dt_sleep)
     
+    print("sorti")
     mybot.powerboard.set_speed(0, 0)
     time.sleep(1.5)
 
