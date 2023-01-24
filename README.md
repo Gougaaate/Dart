@@ -48,9 +48,11 @@ None
 
 
 Connect to the robot with a SSH command in a Linux shell : 
-```$ ssh username@hostname
+```console 
+$ ssh username@hostname
 ```
 Then use a file transfer software like Filezilla to send the files to the robot. You can also clone the git inside it, however, it could take time to commit/pull/push.
 Finally, once you are connected to the robot, move to the py directory, and execute the python programm you want to run :
-```$ python3 my_code.py
+```console
+$ python3 my_code.py
 ```
