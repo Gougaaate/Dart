@@ -1,47 +1,50 @@
-# DARTV2 Challenge 2022 - Groupe xXDartSasukeXx
+# DARTV2 Challenge 2022 - Group xXDartSasukeXx
 
 
 
 
-### Auteurs
+### Authors
 
-- Louis Gillard - [louis.gillard@ensta-bretagne.org](https://outlook.office.com/mail) (Promotion ENSTA Bretagne 2024 Spécialité Robotique Autonome)
-- Adam Goux--Gateau - [adam.goux--gateau@ensta-bretagne.org](https://outlook.office.com/mail) (Promotion ENSTA Bretagne 2024 Spécialité Robotique Autonome)
+- Louis Gillard - [louis.gillard@ensta-bretagne.org](https://outlook.office.com/mail) (Promotion ENSTA Bretagne 2024 Speciality Autonomous Robotics)
+- Adam Goux--Gateau - [adam.goux--gateau@ensta-bretagne.org](https://outlook.office.com/mail) (Promotion ENSTA Bretagne 2024 Speciality Autonomous Robotics)
 
 ### Description
 
-Ce projet consiste en l'automatisation d'un robot terrestre, le "DART". Il devra parcourir un trajet dans un labyrinthe en s'aidant uniquement de ses capteurs à ultrasons et ses odomètres pour se guider. La programmation s'effectuera  en langage Python 3.
+This project consists in the automation of a ground robot, the "DART". It will have to travel a path in a maze using only its ultrasonic sensors and odometers to guide itself. The programming will be done in Python 3 language.
 
-### Remarque(s)
+### Note(s)
 
-Projet terminé le 06/01/2023, Robotique 2e année ENSTA Bretagne.
+Project finished on 06/01/2023, Robotics 2nd year ENSTA Bretagne.
 
-## Sommaire
-- [Structure du Git](#structure-du-git)
-- [Informations Générales](#informations-générales)
-  - [État du Projet](#état-du-projet)
-  - [Travail effectué](#travail-effectué)
-  - [Travail en cours](#travail-en-cours)
-- [Guide d'utilisation](#guide-dutilisation)
+## Contents
+- Git structure](#structure-du-git)
+- General information](#general-information)
+  - Project Status](#project-status)
+  - [Work done](#work-done)
+  - [Work in Progress](#work-in-progress)
+- User Guide](#user-guide)
 
-## Structure du Git
-Les codes se trouvent dans le dossier py
+## Git structure
+The codes are in the folder py
   
-## Informations Générales  
+## General Information  
   
-  ### État du Projet
+  ### Project Status
     
 100%  
-Simulations fonctionnelles, robot réel remplit le cahier des charges 
+Functional simulations, real robot meets specifications 
 
-  ### Travail effectué
-Ce README a été écrit, et nous nous sommes familiarisés avec V-REP et git.
-Mise en place d'un système d'affichage de logs.
+  ### Work done
+This README was written, and we got familiar with V-REP and git.
+Set up a log display system.
 
-Validation de notre simulation, passage au DART réel. Ligne droite maîtrisée, ainsi que détection des murs devant le robot. 
-Utilisation de la boussole pour les virages. 
-Robot effectif, il parvient à corriger son cap et effectue ses virages au moyen de la boussole.
+Validation of our simulation, switch to real DART. Straight line mastered, as well as detection of walls in front of the robot. 
+Use of the compass for the turns. 
+Robot effective, it manages to correct its course and makes its turns using the compass.
   
-  ### Travail en cours
+  ### Work in progress
 None
-## Guide d'utilisation
+## User guide
+
+
+Translated with www.DeepL.com/Translator (free version)
