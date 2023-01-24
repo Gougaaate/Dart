@@ -17,12 +17,12 @@ This project consists in the automation of a ground robot, the "DART". It will h
 Project finished on 06/01/2023, Robotics 2nd year ENSTA Bretagne.
 
 ## Contents
-- Git structure](#structure-du-git)
-- General information](#general-information)
-  - Project Status](#project-status)
+- [Git structure](#structure-du-git)
+- [General information](#general-information)
+  - [Project Status](#project-status)
   - [Work done](#work-done)
   - [Work in Progress](#work-in-progress)
-- User Guide](#user-guide)
+- [User Guide](#user-guide)
 
 ## Git structure
 The codes are in the folder py
